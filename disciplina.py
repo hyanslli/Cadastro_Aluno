@@ -4,24 +4,16 @@ from professor import Professor
 
 class Disciplina(Sala, Professor):
     diciplinas = {}
-    def __init__(self, nome, carga_horaria, horario,numero_Sala , bloco, capacidade, professor):
+    def __init__(self, nome, carga_horaria, horario,numero_Sala , bloco, capacidade, id_Professor):
         self.nome = nome
         self.carga_horaria = carga_horaria
         self.horario = horario
         self.id_Disciplina = uuid.uuid4()
         super().__init__(numero_Sala , bloco, capacidade)
         Disciplina.diciplina[self.id] = self
-
-        if professor is not None:
-            if not isinstance(professor, Professor):
-                raise TypeError("O professor deve ser uma instância da classe Professor")
-            else:
-                if Professor.get_Professor(professor.get_Id) is None:
-                    raise ValueError("O professor não existe na lista de professores")
-                else:
-                    self.professor = professor
-        else:
-            self.professor = None
+        self.professor = Professor.get_Professor(id_Professor)
+        if self.professor is None:
+            raise ValueError("Professor não encontrado.")
 
     @property
     def __get_id__(self):
